@@ -16,10 +16,12 @@ app.get('/', (req, res) => {
 
 // --- ĐĂNG KÝ ROUTES ---
 const productRoutes = require('./app/routes/product.routes.js');
-const authRoutes = require('./app/routes/auth.routes.js'); // <-- Import auth routes
+const authRoutes = require('./app/routes/auth.routes.js');
+const orderRoutes = require('./app/routes/order.routes.js'); // <-- Import order routes
 
 app.use('/api/products', productRoutes);
-app.use('/api/auth', authRoutes); // <-- Sử dụng auth routes
+app.use('/api/auth', authRoutes);
+app.use('/api/orders', orderRoutes); // <-- Sử dụng order routes
 
 
 const PORT = process.env.PORT || 8080;
