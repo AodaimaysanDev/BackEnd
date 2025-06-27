@@ -9,12 +9,17 @@ const jwt = require('jsonwebtoken');
 // 1. REGISTER: Đăng ký người dùng mới
 exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, name, email, password } = req.body;
 
     // Kiểm tra xem email đã tồn tại chưa
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'Email này đã được sử dụng.' });
+    }
+
+    const existingUsername = await User.findOne({ username });
+    if (existingUsername) {
+      return res.status(400).json({ message: 'Username này đã được sử dụng.'});
     }
 
     // Mã hóa mật khẩu
@@ -23,6 +28,7 @@ exports.register = async (req, res) => {
 
     // Tạo người dùng mới
     const newUser = new User({
+      username,
       name,
       email,
       password: hashedPassword,

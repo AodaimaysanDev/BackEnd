@@ -29,6 +29,12 @@ const UserSchema = new mongoose.Schema({
     enum: ['customer', 'admin'], // Chỉ cho phép hai giá trị này
     default: 'customer', // Mặc định người dùng mới là khách hàng
   },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
 }, {
   timestamps: true,
 });
