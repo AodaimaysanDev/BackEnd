@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const serverless = require("serverless-http");
 const cors = require('cors');
 const connectDB = require('./app/config/db.config');
 
@@ -27,4 +26,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/stats', statsRoutes); // <-- Sử dụng stats routes
 
 
-module.exports.handler = serverless(app);
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server đang chạy trên cổng ${PORT}.`);
+});
