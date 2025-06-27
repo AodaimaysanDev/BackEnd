@@ -13,5 +13,7 @@ router.get('/', protect, isAdmin, appointmentController.getAllAppointments);
 router.put('/:id/status', protect, isAdmin, appointmentController.updateAppointmentStatus);
 // Admin xóa lịch hẹn
 router.delete('/:id', protect, isAdmin, appointmentController.deleteAppointment);
+// Admin sửa lịch hẹn
+router.put('/:id', protect, isAdmin, appointmentController.editAppointment);
 
 module.exports = router; 
