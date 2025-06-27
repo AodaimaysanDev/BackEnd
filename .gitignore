@@ -98,3 +98,5 @@ public/build/
 
 # Vitest coverage directory
 coverage/ 
+
+.netlify
