@@ -19,11 +19,13 @@ const productRoutes = require('./app/routes/product.routes.js');
 const authRoutes = require('./app/routes/auth.routes.js');
 const orderRoutes = require('./app/routes/order.routes.js');
 const statsRoutes = require('./app/routes/stats.routes.js'); // <-- Import stats routes
+const appointmentRoutes = require('./app/routes/appointment.routes.js'); // <-- Import appointment routes
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/stats', statsRoutes); // <-- Sử dụng stats routes
+app.use('/api/appointments', appointmentRoutes); // <-- Sử dụng appointment routes
 
 
 const PORT = process.env.PORT || 8080;
