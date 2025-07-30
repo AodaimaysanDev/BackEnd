@@ -4,7 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node server.js"
+    "build": "node server.js",
+    "start": "node server.js",
+    "init-db": "node scripts/init-database.js",
+    "quick-init": "node scripts/quick-init.js"
   },
   "keywords": [],
   "author": "",
