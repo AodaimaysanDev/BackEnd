@@ -6,8 +6,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node server.js",
     "start": "node server.js",
+    "start:https": "node server_https.js",
+    "start:mysql": "node mysql_server.js",
+    "start:mysql:https": "node mysql_server_https.js",
     "init-db": "node scripts/init-database.js",
-    "quick-init": "node scripts/quick-init.js"
+    "quick-init": "node scripts/quick-init.js",
+    "generate-ssl": "bash generate-ssl.sh"
   },
   "keywords": [],
   "author": "",

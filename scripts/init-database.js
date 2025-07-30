@@ -73,14 +73,14 @@ const initializeDatabase = async () => {
         name: 'Khách hàng mẫu',
         email: 'customer@example.com',
         password: customerPassword,
-        role: 'user'
+        role: 'customer'
       });
 
       await customerUser.save();
       console.log('✅ Created test customer user:');
       console.log('   Email: customer@example.com');
       console.log('   Password: customer123');
-      console.log('   Role: user');
+      console.log('   Role: customer');
     } else {
       console.log('✅ Users already exist');
     }
