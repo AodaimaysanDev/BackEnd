@@ -1,17 +1,10 @@
-// ------------------------------------------------------------------
-// FILE: app/controllers/product.controller.js
-// MỤC ĐÍCH: Chứa tất cả logic để xử lý dữ liệu sản phẩm.
-// ------------------------------------------------------------------
-const Product = require('../models/product.model.js');
+const Product = require('../models/mysql_product.model');
 
 // 1. CREATE: Tạo một sản phẩm mới
 exports.createProduct = async (req, res) => {
   try {
-    // Lấy dữ liệu từ body của request
     const { name, description, price, category, stock, imageUrl, images } = req.body;
-
-    // Tạo một đối tượng sản phẩm mới dựa trên model
-    const newProduct = new Product({
+    const newProduct = await Product.create({
       name,
       description,
       price,
@@ -20,14 +13,8 @@ exports.createProduct = async (req, res) => {
       imageUrl,
       images: images || [], // Mảng các hình ảnh
     });
-
-    // Lưu sản phẩm mới vào database
-    const savedProduct = await newProduct.save();
-
-    // Trả về sản phẩm đã tạo với status code 201 (Created)
-    res.status(201).json(savedProduct);
+    res.status(201).json(newProduct);
   } catch (error) {
-    // Nếu có lỗi, trả về status 500 (Internal Server Error) và thông báo lỗi
     res.status(500).json({ message: 'Lỗi khi tạo sản phẩm', error: error.message });
   }
 };
@@ -35,8 +22,7 @@ exports.createProduct = async (req, res) => {
 // 2. READ: Lấy tất cả sản phẩm
 exports.getAllProducts = async (req, res) => {
   try {
-    // Dùng model để tìm tất cả các document trong collection 'products'
-    const products = await Product.find({}).populate('category');
+    const products = await Product.findAll();
     res.status(200).json(products);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi lấy danh sách sản phẩm', error: error.message });
@@ -47,13 +33,10 @@ exports.getAllProducts = async (req, res) => {
 exports.getProductById = async (req, res) => {
   try {
     const productId = req.params.id;
-    const product = await Product.findById(productId).populate('category');
-
+    const product = await Product.findByPk(productId);
     if (!product) {
-      // Nếu không tìm thấy sản phẩm, trả về lỗi 404 (Not Found)
       return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
     }
-
     res.status(200).json(product);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi lấy thông tin sản phẩm', error: error.message });
@@ -65,14 +48,11 @@ exports.updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     const updateData = req.body;
-
-    // Tìm và cập nhật sản phẩm. Tùy chọn { new: true } để kết quả trả về là sản phẩm sau khi đã cập nhật.
-    const updatedProduct = await Product.findByIdAndUpdate(productId, updateData, { new: true, runValidators: true });
-
-    if (!updatedProduct) {
+    const [updatedRows] = await Product.update(updateData, { where: { id: productId } });
+    if (!updatedRows) {
       return res.status(404).json({ message: 'Không tìm thấy sản phẩm để cập nhật' });
     }
-
+    const updatedProduct = await Product.findByPk(productId);
     res.status(200).json(updatedProduct);
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi cập nhật sản phẩm', error: error.message });
@@ -83,14 +63,12 @@ exports.updateProduct = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
-    const deletedProduct = await Product.findByIdAndDelete(productId);
-
-    if (!deletedProduct) {
+    const deletedRows = await Product.destroy({ where: { id: productId } });
+    if (!deletedRows) {
       return res.status(404).json({ message: 'Không tìm thấy sản phẩm để xóa' });
     }
-
     res.status(200).json({ message: 'Sản phẩm đã được xóa thành công' });
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi xóa sản phẩm', error: error.message });
   }
-};
+}; 

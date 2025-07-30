@@ -18,15 +18,16 @@ app.get('/', (req, res) => {
 const productRoutes = require('./app/routes/product.routes.js');
 const authRoutes = require('./app/routes/auth.routes.js');
 const orderRoutes = require('./app/routes/order.routes.js');
-const statsRoutes = require('./app/routes/stats.routes.js'); // <-- Import stats routes
-const appointmentRoutes = require('./app/routes/appointment.routes.js'); // <-- Import appointment routes
+const statsRoutes = require('./app/routes/stats.routes.js');
+const appointmentRoutes = require('./app/routes/appointment.routes.js');
+const categoryRoutes = require('./app/routes/category.routes.js');
 
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/stats', statsRoutes); // <-- Sử dụng stats routes
-app.use('/api/appointments', appointmentRoutes); // <-- Sử dụng appointment routes
-
+app.use('/api/stats', statsRoutes);
+app.use('/api/appointments', appointmentRoutes);
+app.use('/api/categories', categoryRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

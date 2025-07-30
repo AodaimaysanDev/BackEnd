@@ -17,12 +17,25 @@ const ProductSchema = new mongoose.Schema(
       required: [true, 'Vui lòng nhập giá sản phẩm'],
       min: [0, 'Giá sản phẩm không thể là số âm'],
     },
-    imageUrl: {
+    images: [{
       type: String,
       required: false, // Không bắt buộc, có thể thêm sau
+    }],
+    imageUrl: {
+      type: String,
+      required: false, // Giữ lại để backward compatibility
+    },
+    size: {
+        type: [String],
+        required: false,
+    },
+    color: {
+        type: [String],
+        required: false,
     },
     category: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
       required: [true, 'Vui lòng nhập danh mục cho sản phẩm'],
     },
     stock: {
