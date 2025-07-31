@@ -8,7 +8,7 @@ const Product = require('../models/product.model.js');
 exports.createProduct = async (req, res) => {
   try {
     // Lấy dữ liệu từ body của request
-    const { name, description, price, category, stock, imageUrl, images } = req.body;
+    const { name, description, price, category, stock, imageUrl, images, size, color } = req.body;
 
     // Tạo một đối tượng sản phẩm mới dựa trên model
     const newProduct = new Product({
@@ -18,8 +18,15 @@ exports.createProduct = async (req, res) => {
       category,
       stock,
       imageUrl,
-      images: images || [], // Mảng các hình ảnh
+      images: images || [], // Mảng các hình ảnh base64
+      size: size || [],     // Mảng các kích thước
+      color: color || [],   // Mảng các màu sắc
     });
+
+    console.log('Creating new product with:');
+    console.log(`- Size: ${size && Array.isArray(size) ? size.length : 0} items`);
+    console.log(`- Color: ${color && Array.isArray(color) ? color.length : 0} items`);
+    console.log(`- Images: ${images && Array.isArray(images) ? images.length : 0} items`);
 
     // Lưu sản phẩm mới vào database
     const savedProduct = await newProduct.save();
@@ -28,6 +35,7 @@ exports.createProduct = async (req, res) => {
     res.status(201).json(savedProduct);
   } catch (error) {
     // Nếu có lỗi, trả về status 500 (Internal Server Error) và thông báo lỗi
+    console.error('Error creating product:', error);
     res.status(500).json({ message: 'Lỗi khi tạo sản phẩm', error: error.message });
   }
 };

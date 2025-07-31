@@ -35,13 +35,18 @@ Your frontend is deployed on HTTPS (https://aodaimaysancodinh.netlify.app/) but 
 
 ### Option 2: Use self-signed certificates (For testing)
 
-1. **Generate SSL certificates:**
+1. **Fix permission and generate SSL certificates:**
    ```bash
-   # On Linux/Mac
+   # Method 1: Fix permissions first
+   chmod +x generate-ssl.sh
    ./generate-ssl.sh
    
-   # On Windows
-   generate-ssl.bat
+   # Method 2: Run directly with bash
+   bash generate-ssl.sh
+   
+   # Method 3: Manual certificate generation
+   mkdir -p ssl
+   openssl req -x509 -newkey rsa:4096 -keyout ssl/key.pem -out ssl/cert.pem -days 365 -nodes -subj "/C=VN/ST=Vietnam/L=Ho Chi Minh/O=AoDaiMaySan/CN=206.189.148.163"
    ```
 
 2. **Start HTTPS server:**
@@ -108,6 +113,25 @@ After setting up HTTPS:
 
 ## Troubleshooting
 
+### Permission Denied Error
+If you get "Permission denied" when running `./generate-ssl.sh`:
+
+1. **Fix script permissions:**
+   ```bash
+   chmod +x generate-ssl.sh
+   ```
+
+2. **Alternative methods:**
+   ```bash
+   # Method 1: Run with bash directly
+   bash generate-ssl.sh
+   
+   # Method 2: Manual command
+   mkdir -p ssl && openssl req -x509 -newkey rsa:4096 -keyout ssl/key.pem -out ssl/cert.pem -days 365 -nodes -subj "/C=VN/ST=Vietnam/L=Ho Chi Minh/O=AoDaiMaySan/CN=206.189.148.163"
+   ```
+
+### Other Common Issues
 - **Certificate errors:** Make sure certificates are properly generated and paths are correct
 - **CORS errors:** Update CORS settings to include your frontend domain
 - **Port issues:** Ensure firewalls allow traffic on HTTPS ports (443 or 8443)
+- **OpenSSL not found:** Install OpenSSL first: `sudo apt install openssl`

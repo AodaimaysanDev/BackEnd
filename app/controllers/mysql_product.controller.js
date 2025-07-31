@@ -3,7 +3,13 @@ const Product = require('../models/mysql_product.model');
 // 1. CREATE: Tạo một sản phẩm mới
 exports.createProduct = async (req, res) => {
   try {
-    const { name, description, price, category, stock, imageUrl, images } = req.body;
+    const { name, description, price, category, stock, imageUrl, images, size, color } = req.body;
+    
+    console.log('MySQL - Creating new product with:');
+    console.log(`- Size: ${size && Array.isArray(size) ? size.length : 0} items`);
+    console.log(`- Color: ${color && Array.isArray(color) ? color.length : 0} items`);
+    console.log(`- Images: ${images && Array.isArray(images) ? images.length : 0} items`);
+    
     const newProduct = await Product.create({
       name,
       description,
@@ -11,10 +17,13 @@ exports.createProduct = async (req, res) => {
       category,
       stock,
       imageUrl,
-      images: images || [], // Mảng các hình ảnh
+      images: images || [], // Mảng các hình ảnh base64
+      size: size || [],     // Mảng các kích thước
+      color: color || [],   // Mảng các màu sắc
     });
     res.status(201).json(newProduct);
   } catch (error) {
+    console.error('MySQL - Error creating product:', error);
     res.status(500).json({ message: 'Lỗi khi tạo sản phẩm', error: error.message });
   }
 };

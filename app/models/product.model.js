@@ -19,11 +19,21 @@ const ProductSchema = new mongoose.Schema(
     },
     images: [{
       type: String,
-      required: false, // Không bắt buộc, có thể thêm sau
+      required: false, // Lưu trữ hình ảnh dưới dạng base64
+      maxlength: [5000000, 'Kích thước hình ảnh quá lớn'], // Giới hạn kích thước cho base64
+      validate: {
+        validator: function(v) {
+          // Simple validation to check if it's a base64 image
+          return !v || v.startsWith('data:image');
+        },
+        message: props => `${props.value} không phải là định dạng hình ảnh hợp lệ!`
+      }
     }],
+    // Giữ lại imageUrl để backward compatibility, nhưng khuyến khích sử dụng mảng images
     imageUrl: {
       type: String,
-      required: false, // Giữ lại để backward compatibility
+      required: false, // Được giữ lại để tương thích với phiên bản cũ
+      deprecated: true, // Đánh dấu là sẽ không được sử dụng trong tương lai
     },
     size: {
         type: [String],
