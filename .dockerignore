@@ -1,0 +1,8 @@
+# Ignore dependencies, git, and local environment files
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+Dockerfile
+.dockerignore
